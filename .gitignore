@@ -11,3 +11,6 @@ __pycache__/
 
 # Generated CAD outputs (optional — remove below line to include in repo)
 # outputs/outputs/
+venv311/
+venv/
+*>so

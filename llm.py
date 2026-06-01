@@ -1,73 +1,39 @@
 """
-llm.py
-──────
-Handles all communication with the local Ollama LLM.
-
-Ollama runs entirely offline on your machine — no API key needed,
-no internet connection required at inference time.
-
-Responsibilities:
-- Create and return an Ollama-compatible client
-- Send prompts to the LLM and return the raw text response
-- Maintain conversation history so retry messages include previous context
+llm.py — Groq API client and LLM communication.
 """
 
-from openai import OpenAI
+import os
+from typing import Optional
 
-from config import OLLAMA_MODEL, OLLAMA_BASE_URL, LLM_TEMPERATURE, SYSTEM_PROMPT
+from groq import Groq
+
+from config import GROQ_MODEL, LLM_TEMPERATURE, LLM_MAX_TOKENS, SYSTEM_PROMPT
 
 
-def get_ollama_client() -> OpenAI:
-    """
-    Create and return an Ollama client.
-
-    Ollama exposes an OpenAI-compatible API at localhost:11434,
-    so we use the openai library to talk to it.
-    No API key is needed — Ollama runs fully offline.
-
-    Returns:
-        OpenAI: client pointed at local Ollama server
-
-    Raises:
-        ConnectionError: if Ollama is not running (start with: ollama serve)
-    """
-    return OpenAI(
-        base_url=f"{OLLAMA_BASE_URL}/v1",
-        api_key="ollama",   # Ollama requires any non-empty string here
-    )
+def get_groq_client() -> Groq:
+    api_key: Optional[str] = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        raise EnvironmentError(
+            "GROQ_API_KEY environment variable not set.\n"
+            
+        )
+    return Groq(api_key=api_key)
 
 
 def call_llm(
-    client: OpenAI,
+    client: Groq,
     user_prompt: str,
     conversation: list[dict],
 ) -> str:
-    """
-    Send a prompt to the Ollama LLM and return the response text.
-
-    The conversation list is updated in-place so that previous messages
-    are included in each new API call. This allows the retry loop to
-    send error context back to the LLM for self-correction.
-
-    Args:
-        client:       Ollama client from get_ollama_client()
-        user_prompt:  The new message to send (description or error feedback)
-        conversation: Running list of past messages — updated in-place
-
-    Returns:
-        str: raw text response from the LLM (may contain markdown fences)
-    """
-    # Append the new user message to conversation history
     conversation.append({"role": "user", "content": user_prompt})
 
     response = client.chat.completions.create(
-        model=OLLAMA_MODEL,
+        model=GROQ_MODEL,
         messages=[{"role": "system", "content": SYSTEM_PROMPT}] + conversation,
         temperature=LLM_TEMPERATURE,
+        max_tokens=LLM_MAX_TOKENS,
     )
 
     reply: str = response.choices[0].message.content.strip()
-
-    # Append the LLM reply so the next call has full context
     conversation.append({"role": "assistant", "content": reply})
     return reply
