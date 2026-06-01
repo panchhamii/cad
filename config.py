@@ -1,26 +1,20 @@
 """
-config.py
-─────────
-Central configuration for the LLM-Driven CAD Generation pipeline.
-All constants, model settings, and the LLM system prompt live here.
-Changing a value here affects the entire project — no hunting through files.
+config.py — Central configuration for the LLM-Driven CAD Generation pipeline.
 """
 
 import textwrap
 from pathlib import Path
 
 # ── LLM Settings ──────────────────────────────────────────────
-OLLAMA_MODEL: str = "llama3.1:8b"   # Model to use with Ollama
-OLLAMA_BASE_URL: str = "http://localhost:11434"  # Ollama runs locally
-MAX_RETRIES: int = 2          # How many times to retry on LLM code failure
-LLM_TEMPERATURE: float = 0.1  # Low = more deterministic code output
+GROQ_MODEL: str = "llama-3.3-70b-versatile"
+MAX_RETRIES: int = 2
+LLM_TEMPERATURE: float = 0.1
+LLM_MAX_TOKENS: int = 1024
 
 # ── File Output ───────────────────────────────────────────────
 OUTPUT_DIR: Path = Path("outputs")
 
 # ── System Prompt ─────────────────────────────────────────────
-# This teaches the LLM what format to generate code in.
-# More examples here = more shape types the LLM can handle reliably.
 SYSTEM_PROMPT: str = textwrap.dedent("""
 You are a CadQuery expert. When given a description of a 3D object,
 you output ONLY valid Python code using the CadQuery library (import cadquery as cq).

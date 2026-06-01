@@ -13,20 +13,17 @@ Example:
 
 ```bash
 pip install cadquery groq
-export GROQ_API_KEY=your_key_here   # Free key at https://console.groq.com
+export GROQ_API_KEY=your_key_here   #
 ```
 
 ## Usage
 
-```bash
-# Run all 3 demo examples
-python main.py --demo
+
 
 # Single custom prompt
 python main.py --prompt "Create a solid box 60mm x 30mm x 20mm" --output my_box
 
-# Interactive mode
-python main.py
+
 ```
 
 ## How It Works
