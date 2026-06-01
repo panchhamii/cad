@@ -1,6 +1,4 @@
-"""
-config.py — Central configuration for the LLM-Driven CAD Generation pipeline.
-"""
+
 
 import textwrap
 from pathlib import Path
@@ -29,7 +27,7 @@ Rules:
 - If the shape requires a hole, use .cut() or shell operations
 - For a cone, ALWAYS use the revolve method with a triangle profile in the XZ workplane,
   and ALWAYS pass revolve(360, (0, 0), (0, 1)) to fix the axis — never use .cone()
-
+-Always produce a 3D solid — never leave a shape as a 2D sketch. Always call .extrude() after .rect() or any 2D profile
 Examples:
 
 Input: A solid box 60mm long, 30mm wide, 20mm tall

@@ -1,4 +1,6 @@
-
+"""
+pipeline.py — Main orchestrator connecting all modules.
+"""
 
 import time
 from pathlib import Path
@@ -10,11 +12,20 @@ from exporter import export_step
 from shapes import is_cone_request, extract_cone_dimensions, build_cone_code
 
 
+def _make_output_name(description: str) -> str:
+    words = description.lower().replace(",", "").replace(".", "").split()
+    keywords = [w for w in words if w not in ("create", "a", "an", "the", "with", "and", "of")]
+    return "_".join(keywords[:4]) or "output"
+
+
 def generate_cad(
     description: str,
-    output_name: str = "output",
+    output_name: str = "",
     verbose: bool = True,
 ) -> dict:
+    if not output_name:
+        output_name = _make_output_name(description)
+
     client = get_groq_client()
     conversation: list[dict] = []
 
