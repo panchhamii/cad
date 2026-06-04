@@ -1,10 +1,3 @@
-"""
-shapes.py — Special-case shape handlers.
-
-Cones are handled separately because the LLM often generates
-an incorrect revolve() axis. We extract dimensions from the prompt
-and use a known-correct template instead.
-"""
 
 import re
 import textwrap

@@ -1,6 +1,4 @@
-"""
-codegen.py — Code extraction, syntax validation, and execution.
-"""
+
 
 import ast
 

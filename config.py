@@ -3,16 +3,16 @@
 import textwrap
 from pathlib import Path
 
-# ── LLM Settings ──────────────────────────────────────────────
+# LLM Settings 
 GROQ_MODEL: str = "llama-3.3-70b-versatile"
 MAX_RETRIES: int = 2
 LLM_TEMPERATURE: float = 0.1
 LLM_MAX_TOKENS: int = 1024
 
-# ── File Output ───────────────────────────────────────────────
+# File Output 
 OUTPUT_DIR: Path = Path("outputs")
 
-# ── System Prompt ─────────────────────────────────────────────
+#System Prompt 
 SYSTEM_PROMPT: str = textwrap.dedent("""
 You are a CadQuery expert. When given a description of a 3D object,
 you output ONLY valid Python code using the CadQuery library (import cadquery as cq).

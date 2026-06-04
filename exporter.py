@@ -1,6 +1,4 @@
-"""
-exporter.py — STEP file export with dimension verification.
-"""
+
 
 from pathlib import Path
 import cadquery as cq

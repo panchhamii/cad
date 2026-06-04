@@ -1,8 +1,7 @@
-"""
-llm.py — Groq API client and LLM communication.
-"""
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from typing import Optional
 
 from groq import Groq

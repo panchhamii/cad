@@ -1,8 +1,7 @@
-"""
-pipeline.py — Main orchestrator connecting all modules.
-"""
+
 
 import time
+from mcp_server import view_step_file
 from pathlib import Path
 
 from config import MAX_RETRIES, OUTPUT_DIR
@@ -123,6 +122,7 @@ def _execute_and_export(
         if verbose:
             print("OK")
             print(f"  [SUCCESS] STEP saved → {step_path}")
+        view_step_file(str(step_path))
     except Exception as e:
         result["error"] = f"STEP export failed: {e}"
         if verbose:
